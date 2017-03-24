@@ -1,11 +1,11 @@
-# Class: datadog_agent::reports
+# Class: stackstate_agent::reports
 #
 # This class configures the puppetmaster for reporting back to
-# the datadog service.
+# the stackstate service.
 #
 # Parameters:
 #   $api_key:
-#       Your DataDog API Key. Please replace with your key value
+#       Your StackState API Key. Please replace with your key value
 #
 # Actions:
 #
@@ -13,7 +13,7 @@
 #
 # Sample Usage:
 #
-class datadog_agent::reports(
+class stackstate_agent::reports(
   $api_key,
   $puppet_gem_provider,
   $puppetmaster_user,
@@ -21,8 +21,8 @@ class datadog_agent::reports(
   $hostname_extraction_regex = nil
 ) {
 
-  include datadog_agent::params
-  $rubydev_package = $datadog_agent::params::rubydev_package
+  include stackstate_agent::params
+  $rubydev_package = $stackstate_agent::params::rubydev_package
 
   # check to make sure that you're not installing rubydev somewhere else
   if ! defined(Package[$rubydev_package]) {
@@ -39,13 +39,13 @@ class datadog_agent::reports(
     }
   }
 
-  file { '/etc/dd-agent/datadog.yaml':
+  file { '/etc/sts-agent/stackstate.yaml':
     ensure  => file,
-    content => template('datadog_agent/datadog.yaml.erb'),
+    content => template('stackstate_agent/stackstate.yaml.erb'),
     owner   => $puppetmaster_user,
     group   => 'root',
     mode    => '0640',
-    require => File['/etc/dd-agent'],
+    require => File['/etc/sts-agent'],
   }
 
   package{'dogapi':

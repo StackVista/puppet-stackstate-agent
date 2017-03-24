@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::disk
+# Class: stackstate_agent::integrations::disk
 #
 # This class will install the necessary config to hook the disk check
 #
@@ -26,12 +26,12 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::disk' :
+#  class { 'stackstate_agent::integrations::disk' :
 #      use_mount            => 'yes',
 #      excluded_filesystems => '/dev/tmpfs',
 #      excluded_disk_re     => '/dev/sd[e-z]*'
 #  }
-class datadog_agent::integrations::disk (
+class stackstate_agent::integrations::disk (
   $use_mount              = 'no',
   $excluded_filesystems   = undef,
   $excluded_disks         = undef,
@@ -39,21 +39,21 @@ class datadog_agent::integrations::disk (
   $excluded_mountpoint_re = undef,
   $all_partitions         = undef,
   $tag_by_filesystem      = undef
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
   validate_re($use_mount, '^(no|yes)$', "use_mount should be either 'yes' or 'no'")
   if $all_partitions {
     validate_re($all_partitions, '^(no|yes)$', "all_partitions should be either 'yes' or 'no'")
   }
 
-  file { "${datadog_agent::params::conf_dir}/disk.yaml":
+  file { "${stackstate_agent::params::conf_dir}/disk.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/disk.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/disk.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

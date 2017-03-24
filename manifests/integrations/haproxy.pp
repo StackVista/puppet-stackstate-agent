@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::haproxy
+# Class: stackstate_agent::integrations::haproxy
 #
 # This class will install the necessary configuration for the haproxy integration
 #
@@ -8,19 +8,19 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog_agent::integrations::haproxy' :
+#   class { 'stackstate_agent::integrations::haproxy' :
 #     url   => 'http://localhost:8080',
 #     creds => { username => 'admin',
 #                password => 'password',
 #              },
 #   }
 #
-class datadog_agent::integrations::haproxy(
+class stackstate_agent::integrations::haproxy(
   $creds     = {},
   $url       = "http://${::ipaddress}:8080",
   $instances = undef,
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
   if !$instances and $url {
     $_instances = [{
@@ -34,13 +34,13 @@ class datadog_agent::integrations::haproxy(
   }
 
   file {
-    "${datadog_agent::params::conf_dir}/haproxy.yaml":
+    "${stackstate_agent::params::conf_dir}/haproxy.yaml":
       ensure  => file,
-      owner   => $datadog_agent::params::dd_user,
-      group   => $datadog_agent::params::dd_group,
+      owner   => $stackstate_agent::params::dd_user,
+      group   => $stackstate_agent::params::dd_group,
       mode    => '0644',
-      content => template('datadog_agent/agent-conf.d/haproxy.yaml.erb'),
-      require => Package[$datadog_agent::params::package_name],
-      notify  => Service[$datadog_agent::params::service_name]
+      content => template('stackstate_agent/agent-conf.d/haproxy.yaml.erb'),
+      require => Package[$stackstate_agent::params::package_name],
+      notify  => Service[$stackstate_agent::params::service_name]
   }
 }

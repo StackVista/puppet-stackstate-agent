@@ -1,14 +1,14 @@
-# Class: datadog_agent::integrations::mysql
+# Class: stackstate_agent::integrations::mysql
 #
 # This class will install the necessary configuration for the mysql integration
 #
 # Parameters:
 #   $password
-#       The mysql password for the datadog user
+#       The mysql password for the stackstate user
 #   $host:
 #       The host mysql is running on
 #   $user
-#       The mysql user for the datadog user
+#       The mysql user for the stackstate user
 #   $sock
 #       Connect mysql via unix socket
 #   $tags
@@ -29,17 +29,17 @@
 #       disable innodb metrics, used with older versions of MySQL without innodb engine support.
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::mysql' :
+#  class { 'stackstate_agent::integrations::mysql' :
 #    host     => 'localhost',
 #    password => 'some_pass',
-#    user     => 'datadog'
+#    user     => 'stackstate'
 #  }
 # Sample Usage (Instance):
-#  class { 'datadog_agent::integrations::mysql' :
+#  class { 'stackstate_agent::integrations::mysql' :
 #    instances => [{
 #      host                      => 'localhost',
 #      password                  => 'mypassword',
-#      user                      => 'datadog',
+#      user                      => 'stackstate',
 #      port                      => '3306',
 #      tags                      => ['instance:mysql1'],
 #      replication               => '0',
@@ -53,10 +53,10 @@
 #  }
 #
 #
-class datadog_agent::integrations::mysql(
+class stackstate_agent::integrations::mysql(
   $password,
   $host = 'localhost',
-  $user = 'datadog',
+  $user = 'stackstate',
   $port = 3306,
   $sock = undef,
   $tags = [],
@@ -68,8 +68,8 @@ class datadog_agent::integrations::mysql(
   $schema_size_metrics = false,
   $disable_innodb_metrics = false,
   $instances = undef,
-  ) inherits datadog_agent::params {
-  include datadog_agent
+  ) inherits stackstate_agent::params {
+  include stackstate_agent
 
   validate_array($tags)
 
@@ -95,14 +95,14 @@ class datadog_agent::integrations::mysql(
     $_instances = $instances
   }
 
-  file { "${datadog_agent::params::conf_dir}/mysql.yaml":
+  file { "${stackstate_agent::params::conf_dir}/mysql.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/mysql.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name],
+    content => template('stackstate_agent/agent-conf.d/mysql.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name],
   }
 }
 

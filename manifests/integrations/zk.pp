@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::zk
+# Class: stackstate_agent::integrations::zk
 #
 # This class will install the necessary configuration for the zk integration
 #
@@ -12,7 +12,7 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::zk' :
+#  class { 'stackstate_agent::integrations::zk' :
 #    servers => [
 #      {
 #        'host' => 'localhost',
@@ -27,20 +27,20 @@
 #    ]
 #  }
 #
-class datadog_agent::integrations::zk (
+class stackstate_agent::integrations::zk (
   $servers = [{'host' => 'localhost', 'port' => '2181'}]
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
   validate_array($servers)
 
-  file { "${datadog_agent::params::conf_dir}/zk.yaml":
+  file { "${stackstate_agent::params::conf_dir}/zk.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/zk.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/zk.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::varnish
+# Class: stackstate_agent::integrations::varnish
 #
 # This class will install the necessary configuration for the varnish integration
 #
@@ -10,31 +10,31 @@
 #       Used in the varnishstat command for the -n argument
 #
 #   tags
-#       DataDog tags
+#       StackState tags
 #
 # Sample usage:
 #
-# include 'datadog_agent::integrations::varnish'
+# include 'stackstate_agent::integrations::varnish'
 #
-# class { 'datadog_agent::integrations::varnish':
+# class { 'stackstate_agent::integrations::varnish':
 #   url      => '/usr/bin/varnishstat',
 #   tags     => ['env:production'],
 # }
 #
-class datadog_agent::integrations::varnish (
+class stackstate_agent::integrations::varnish (
   $varnishstat   = '/usr/bin/varnishstat',
   $instance_name = undef,
   $tags          = [],
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
-  file { "${datadog_agent::params::conf_dir}/varnish.yaml":
+  file { "${stackstate_agent::params::conf_dir}/varnish.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/varnish.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/varnish.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

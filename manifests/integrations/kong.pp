@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::kong
+# Class: stackstate_agent::integrations::kong
 #
 # This class will install the necessary configuration for the Kong integration
 #
@@ -12,7 +12,7 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog_agent::integrations::kong':
+#   class { 'stackstate_agent::integrations::kong':
 #     instances => [
 #         {
 #             'status_url'  => http://localhost:8001/status/',
@@ -24,23 +24,23 @@
 #     ],
 #   }
 #
-class datadog_agent::integrations::kong (
+class stackstate_agent::integrations::kong (
   $instances = [
     {
       'status_url' => 'http://localhost:8001/status/',
       'tags' => []
     }
   ]
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
-  file { "${datadog_agent::params::conf_dir}/kong.yaml":
+  file { "${stackstate_agent::params::conf_dir}/kong.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0644',
-    content => template('datadog_agent/agent-conf.d/kong.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/kong.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::directory
+# Class: stackstate_agent::integrations::directory
 #
 # This class will install the necessary config to hook the directory check
 #
@@ -14,30 +14,30 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::directory' :
+#  class { 'stackstate_agent::integrations::directory' :
 #      directory     => '/mnt/media',
 #      tag_name      => 'name',
 #      pattern       => '*',
 #      recursive     => true,
 #  }
-class datadog_agent::integrations::directory (
+class stackstate_agent::integrations::directory (
   $directory     = undef,
   $tag_name      = '',
   $pattern       = '*',
   $recursive     = false
-) inherits datadog_agent::params {
+) inherits stackstate_agent::params {
 
   if $directory == undef {
-    fail('you must specify a directory path within the datadog_agent::integrations::directory class')
+    fail('you must specify a directory path within the stackstate_agent::integrations::directory class')
   }
 
-  file { "${datadog_agent::params::conf_dir}/directory.yaml":
+  file { "${stackstate_agent::params::conf_dir}/directory.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/directory.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/directory.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

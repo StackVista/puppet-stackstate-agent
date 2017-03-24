@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::rabbitmq
+# Class: stackstate_agent::integrations::rabbitmq
 #
 # This class will install the necessary config to hook the rabbitmq in the agent
 #
@@ -38,14 +38,14 @@
 #
 # Sample Usage:
 #
-# class { 'datadog_agent::integrations::rabbitmq':
+# class { 'stackstate_agent::integrations::rabbitmq':
 #   url      => 'http://localhost:15672/api/',
 #   username => 'guest',
 #   password => 'guest',
 # }
 #
 
-class datadog_agent::integrations::rabbitmq (
+class stackstate_agent::integrations::rabbitmq (
   $url            = undef,
   $username       = 'guest',
   $password       = 'guest',
@@ -56,7 +56,7 @@ class datadog_agent::integrations::rabbitmq (
   $queues         = [],
   $queues_regexes = [],
   $vhosts         = [],
-) inherits datadog_agent::params {
+) inherits stackstate_agent::params {
 
   validate_string($url)
   validate_string($username)
@@ -68,15 +68,15 @@ class datadog_agent::integrations::rabbitmq (
   validate_array($queues)
   validate_array($queues_regexes)
   validate_array($vhosts)
-  include datadog_agent
+  include stackstate_agent
 
-  file { "${datadog_agent::params::conf_dir}/rabbitmq.yaml":
+  file { "${stackstate_agent::params::conf_dir}/rabbitmq.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/rabbitmq.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name],
+    content => template('stackstate_agent/agent-conf.d/rabbitmq.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name],
   }
 }

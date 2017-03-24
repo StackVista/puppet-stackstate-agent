@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::jmx
+# Class: stackstate_agent::integrations::jmx
 #
 # This class will install the necessary configuration for the jmx integration
 #
@@ -44,11 +44,11 @@
 #       The trust store password. Should be set if ssl is enabled. Optional.
 #     conf:
 #       Array of include/exclude hash pairs. Optional.
-#       Read http://docs.datadoghq.com/integrations/java/ to learn how to customize it.
+#       Read http://docs.stackstate.com/integrations/java/ to learn how to customize it.
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::jmx':
+#  class { 'stackstate_agent::integrations::jmx':
 #    init_config        => {
 #      custom_jar_paths => ['/path/to/custom.jar']
 #    },
@@ -61,20 +61,20 @@
 #    }],
 #  }
 #
-class datadog_agent::integrations::jmx(
+class stackstate_agent::integrations::jmx(
   $init_config = {},
   $instances   = [],
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
-  file { "${datadog_agent::params::conf_dir}/jmx.yaml":
+  file { "${stackstate_agent::params::conf_dir}/jmx.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/jmx.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/jmx.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 
 }

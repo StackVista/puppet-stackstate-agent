@@ -1,12 +1,12 @@
-# Class: datadog_agent::params
+# Class: stackstate_agent::params
 #
-# This class contains the parameters for the Datadog module
+# This class contains the parameters for the StackState module
 #
 # Parameters:
 #   $api_key:
-#       Your DataDog API Key. Please replace with your key value
+#       Your StackState API Key. Please replace with your key value
 #   $dd_url
-#       The URL to the DataDog application.
+#       The URL to the StackState application.
 #
 # Actions:
 #
@@ -14,12 +14,12 @@
 #
 # Sample Usage:
 #
-class datadog_agent::params {
-  $conf_dir       = '/etc/dd-agent/conf.d'
-  $dd_user        = 'dd-agent'
+class stackstate_agent::params {
+  $conf_dir       = '/etc/sts-agent/conf.d'
+  $dd_user        = 'sts-agent'
   $dd_group       = 'root'
-  $package_name   = 'datadog-agent'
-  $service_name   = 'datadog-agent'
+  $package_name   = 'stackstate-agent'
+  $service_name   = 'stackstate-agent'
   $dogapi_version = 'installed'
   $conf_dir_purge = false
 
@@ -30,7 +30,7 @@ class datadog_agent::params {
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
       $rubydev_package   = 'ruby-devel'
     }
-    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
+    default: { fail("Class[stackstate_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
 }

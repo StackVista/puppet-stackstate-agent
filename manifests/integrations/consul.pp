@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::consul
+# Class: stackstate_agent::integrations::consul
 #
 # This class will install the necessary configuration for the consul integration
 #
@@ -20,32 +20,32 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog_agent::integrations::consul' :
+#   class { 'stackstate_agent::integrations::consul' :
 #     url  => "http://localhost:8500"
 #     catalog_checks    => true,
 #     new_leader_checks => false,
 #   }
 #
-class datadog_agent::integrations::consul(
+class stackstate_agent::integrations::consul(
   $url               = 'http://localhost:8500',
   $catalog_checks    = true,
   $new_leader_checks = true,
   $service_whitelist = []
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
   validate_string($url)
   validate_bool($catalog_checks)
   validate_bool($new_leader_checks)
   validate_array($service_whitelist)
 
-  file { "${datadog_agent::params::conf_dir}/consul.yaml":
+  file { "${stackstate_agent::params::conf_dir}/consul.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0644',
-    content => template('datadog_agent/agent-conf.d/consul.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/consul.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

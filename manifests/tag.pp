@@ -1,5 +1,5 @@
 # Allow custom tags via a define
-define datadog_agent::tag(
+define stackstate_agent::tag(
   $tag = $name,
   $lookup_fact = false,
 ){
@@ -9,19 +9,19 @@ define datadog_agent::tag(
 
     if is_array($value){
       $tags = prefix($value, "${tag}:")
-      datadog_agent::tag{$tags: }
+      stackstate_agent::tag{$tags: }
     } else {
       if $value {
-        concat::fragment{ "datadog tag ${tag}:${value}":
-          target  => '/etc/dd-agent/datadog.conf',
+        concat::fragment{ "stackstate tag ${tag}:${value}":
+          target  => '/etc/sts-agent/stackstate.conf',
           content => "${tag}:${value}, ",
           order   => '03',
         }
       }
     }
   } else {
-    concat::fragment{ "datadog tag ${tag}":
-      target  => '/etc/dd-agent/datadog.conf',
+    concat::fragment{ "stackstate tag ${tag}":
+      target  => '/etc/sts-agent/stackstate.conf',
       content => "${tag}, ",
       order   => '03',
     }

@@ -1,13 +1,13 @@
 {
-  "name": "datadog-datadog_agent",
+  "name": "stackstate-stackstate_agent",
   "version": "1.9.0",
-  "author": "James Turnbull (<james@lovedthanlost.net>) and Rob Terhaar (<rob@atlanticdynamic>) for Datadog Inc.",
-  "summary": "Install the Datadog monitoring agent and report Puppet runs to Datadog",
+  "author": "Mark Bakker (<mbakker@stackstate.com>) for StackState",
+  "summary": "Install the StackState monitoring agent and report Puppet runs to StackState",
   "license": "Apache License, Version 2.0",
-  "source": "git://github.com/DataDog/puppet-datadog-agent.git",
-  "project_page": "https://github.com/DataDog/puppet-datadog-agent",
-  "issues_url": "https://github.com/DataDog/puppet-datadog-agent/issues",
-  "description": "This will install the Datadog monitoring agent. Sign up and get your API key at: http://www.datadoghq.com",
+  "source": "git://github.com/StackState/puppet-stackstate-agent.git",
+  "project_page": "https://github.com/StackState/puppet-stackstate-agent",
+  "issues_url": "https://github.com/StackState/puppet-stackstate-agent/issues",
+  "description": "This will install the StackState monitoring agent. Sign up and get your API key at: http://www.stackstate.com",
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",

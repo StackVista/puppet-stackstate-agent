@@ -1,46 +1,46 @@
-# Class: datadog_agent::integrations::pgbouncer
+# Class: stackstate_agent::integrations::pgbouncer
 #
 # This class will install the necessary configuration for the pgbouncer integration
 #
 # Parameters:
 #   $password
-#       The password for the datadog user
+#       The password for the stackstate user
 #   $host:
 #       The host pgbouncer is listening on
 #   $port
 #       The pgbouncer port number
 #   $username
-#       The username for the datadog user
+#       The username for the stackstate user
 #   $tags
 #       Optional array of tags
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::pgbouncer' :
+#  class { 'stackstate_agent::integrations::pgbouncer' :
 #    host     => 'localhost',
-#    username => 'datadog',
+#    username => 'stackstate',
 #    port     => '6432',
 #    password => 'some_pass',
 #  }
 #
 #
-class datadog_agent::integrations::pgbouncer(
+class stackstate_agent::integrations::pgbouncer(
   $password,
   $host   = 'localhost',
   $port   = '6432',
-  $username = 'datadog',
+  $username = 'stackstate',
   $tags = [],
-) inherits datadog_agent::params {
+) inherits stackstate_agent::params {
 
   validate_array($tags)
 
-  file { "${datadog_agent::params::conf_dir}/pgbouncer.yaml":
+  file { "${stackstate_agent::params::conf_dir}/pgbouncer.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/pgbouncer.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name],
+    content => template('stackstate_agent/agent-conf.d/pgbouncer.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name],
   }
 }

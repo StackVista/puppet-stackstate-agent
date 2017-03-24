@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::ssh
+# Class: stackstate_agent::integrations::ssh
 #
 # This class will enable ssh check
 #
@@ -20,30 +20,30 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::ssh' :
+#  class { 'stackstate_agent::integrations::ssh' :
 #    host             => 'localhost',
 #    private_key_file => '/opt/super_secret_key',
 #  }
 #
 
-class datadog_agent::integrations::ssh(
+class stackstate_agent::integrations::ssh(
   $host              = $::fqdn,
   $port              = 22,
-  $username          = $datadog_agent::params::dd_user,
+  $username          = $stackstate_agent::params::dd_user,
   $password          = undef,
   $sftp_check        = true,
   $private_key_file  = undef,
   $add_missing_keys  = true,
-) inherits datadog_agent::params {
-  include ::datadog_agent
+) inherits stackstate_agent::params {
+  include ::stackstate_agent
 
-  file { "${datadog_agent::params::conf_dir}/ssh.yaml":
+  file { "${stackstate_agent::params::conf_dir}/ssh.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/ssh.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/ssh.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

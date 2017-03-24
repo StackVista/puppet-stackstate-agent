@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::mesos_slave
+# Class: stackstate_agent::integrations::mesos_slave
 #
 # This class will install the necessary configuration for the mesos slave integration
 #
@@ -8,22 +8,22 @@
 #
 # Sample Usage:
 #
-#   class { 'datadog_agent::integrations::mesos' :
+#   class { 'stackstate_agent::integrations::mesos' :
 #     url  => "http://localhost:5051"
 #   }
 #
-class datadog_agent::integrations::mesos_slave(
+class stackstate_agent::integrations::mesos_slave(
   $mesos_timeout = 10,
   $url = 'http://localhost:5051'
-) inherits datadog_agent::params {
+) inherits stackstate_agent::params {
 
-  file { "${datadog_agent::params::conf_dir}/mesos_slave.yaml":
+  file { "${stackstate_agent::params::conf_dir}/mesos_slave.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0644',
-    content => template('datadog_agent/agent-conf.d/mesos_slave.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/mesos_slave.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

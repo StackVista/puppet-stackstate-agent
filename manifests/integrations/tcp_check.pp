@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::tcp_check
+# Class: stackstate_agent::integrations::tcp_check
 #
 # This class will install the necessary config to hook the tcp_check in the agent
 #
@@ -42,13 +42,13 @@
 #
 # Add a class for each check instance:
 #
-# class { 'datadog_agent::integrations::tcp_check':
+# class { 'stackstate_agent::integrations::tcp_check':
 #   name  => 'localhost-ftp',
 #   host       => 'ftp.example.com',
 #   port       => '21',
 # }
 #
-# class { 'datadog_agent::integrations::tcp_check':
+# class { 'stackstate_agent::integrations::tcp_check':
 #   name  => 'localhost-ssh',
 #   host       => '127.0.0.1',
 #   port       => '22',
@@ -57,7 +57,7 @@
 #   tags     => ['production', 'ssh access'],
 # }
 #
-# class { 'datadog_agent::integrations::tcp_check':
+# class { 'stackstate_agent::integrations::tcp_check':
 #   name  => 'localhost-web-response',
 #   host       => '127.0.0.1',
 #   port       => '80',
@@ -71,7 +71,7 @@
 #
 # Add multiple instances in one class declaration:
 #
-#  class { 'datadog_agent::integrations::tcp_check':
+#  class { 'stackstate_agent::integrations::tcp_check':
 #        instances => [{
 #          'name'  => 'www.example.com-http',
 #          'host'  => 'www.example.com',
@@ -85,7 +85,7 @@
 #     }
 
 
-class datadog_agent::integrations::tcp_check (
+class stackstate_agent::integrations::tcp_check (
   $check_name      = undef,
   $host      = undef,
   $port      = undef,
@@ -96,8 +96,8 @@ class datadog_agent::integrations::tcp_check (
   $skip_event = undef,
   $tags      = [],
   $instances  = undef,
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
   if !$instances and $host {
     $_instances = [{
@@ -117,13 +117,13 @@ class datadog_agent::integrations::tcp_check (
     $_instances = $instances
   }
 
-  file { "${datadog_agent::params::conf_dir}/tcp_check.yaml":
+  file { "${stackstate_agent::params::conf_dir}/tcp_check.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/tcp_check.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/tcp_check.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

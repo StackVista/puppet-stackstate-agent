@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::http_check
+# Class: stackstate_agent::integrations::http_check
 #
 # This class will install the necessary config to hook the http_check in the agent
 #
@@ -59,7 +59,7 @@
 #       The (optional) skip_event parameter will instruct the check to not
 #       create any event to avoid duplicates with a server side service check.
 #       This defaults to True because this is being deprecated.
-#       (See https://github.com/DataDog/dd-agent/blob/master/checks/network_checks.py#L178-L180)
+#       (See https://github.com/StackState/sts-agent/blob/master/checks/network_checks.py#L178-L180)
 #
 #   no_proxy
 #       The (optional) no_proxy parameter would bypass any proxy settings enabled
@@ -99,19 +99,19 @@
 #
 # Add a class for each check instance:
 #
-# class { 'datadog_agent::integrations::http_check':
+# class { 'stackstate_agent::integrations::http_check':
 #   sitename  => 'google',
 #   url       => 'http://www.google.com/',
 # }
 #
-# class { 'datadog_agent::integrations::http_check':
+# class { 'stackstate_agent::integrations::http_check':
 #   sitename => 'local',
 #   url      => 'http://localhost/',
 #   headers  => ['Host: stan.borbat.com', 'DNT: true'],
 #   tags     => ['production', 'wordpress'],
 # }
 #
-# class { 'datadog_agent::integrations::http_check':
+# class { 'stackstate_agent::integrations::http_check':
 #   sitename              => 'localhost-9001',
 #   url                   => 'http://localhost:9001/',
 #   timeout               => 5,
@@ -127,7 +127,7 @@
 #
 # Add multiple instances in one class declaration:
 #
-#  class { 'datadog_agent::integrations::http_check':
+#  class { 'stackstate_agent::integrations::http_check':
 #        instances => [{
 #          'sitename'  => 'google',
 #          'url'       => 'http://www.google.com',
@@ -141,7 +141,7 @@
 #     }
 
 
-class datadog_agent::integrations::http_check (
+class stackstate_agent::integrations::http_check (
   $sitename  = undef,
   $url       = undef,
   $username  = undef,
@@ -163,8 +163,8 @@ class datadog_agent::integrations::http_check (
   $tags      = [],
   $contact   = [],
   $instances  = undef,
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
   if !$instances and $url {
     $_instances = [{
@@ -195,13 +195,13 @@ class datadog_agent::integrations::http_check (
     $_instances = $instances
   }
 
-  file { "${datadog_agent::params::conf_dir}/http_check.yaml":
+  file { "${stackstate_agent::params::conf_dir}/http_check.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/http_check.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/http_check.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 }

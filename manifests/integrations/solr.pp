@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::solr
+# Class: stackstate_agent::integrations::solr
 #
 # This class will install the necessary configuration for the solr integration
 #
@@ -22,11 +22,11 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::solr':
+#  class { 'stackstate_agent::integrations::solr':
 #    port => 8081,
 #  }
 #
-class datadog_agent::integrations::solr(
+class stackstate_agent::integrations::solr(
   $hostname             = 'localhost',
   $port                 = 7199,
   $username             = undef,
@@ -35,17 +35,17 @@ class datadog_agent::integrations::solr(
   $trust_store_path     = undef,
   $trust_store_password = undef,
   $tags                 = {},
-) inherits datadog_agent::params {
-  include datadog_agent
+) inherits stackstate_agent::params {
+  include stackstate_agent
 
-  file { "${datadog_agent::params::conf_dir}/solr.yaml":
+  file { "${stackstate_agent::params::conf_dir}/solr.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/solr.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name]
+    content => template('stackstate_agent/agent-conf.d/solr.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name]
   }
 
 }

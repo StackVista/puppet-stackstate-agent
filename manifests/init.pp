@@ -1,14 +1,13 @@
-# Class: datadog_agent
+# Class: stackstate_agent
 #
-# This class contains the agent installation mechanism for the Datadog module
+# This class contains the agent installation mechanism for the StackState module
 #
 # Parameters:
 #   $dd_url:
-#       The host of the Datadog intake server to send agent data to.
-#       Defaults to https://app.datadoghq.com.
+#       The host of the StackState intake server to send agent data to.
 #   $host:
 #   $api_key:
-#       Your DataDog API Key. Please replace with your key value.
+#       Your StackState API Key. Please replace with your key value.
 #   $collect_ec2_tags
 #       Collect AWS EC2 custom tags as agent tags.
 #       Boolean. Default: false
@@ -23,26 +22,25 @@
 #       Optional array of facts' names that you can use to define tags following
 #       the scheme: "fact_name:fact_value".
 #   $puppet_run_reports
-#       Will send results from your puppet agent runs back to the datadog service.
+#       Will send results from your puppet agent runs back to stackstate.
 #   $puppetmaster_user
 #       Will chown the api key used by the report processor to this user.
 #       Defaults to the user the puppetmaster is configured to run as.
 #   $non_local_traffic
 #       Enable you to use the agent as a proxy. Defaults to false.
-#       See https://github.com/DataDog/dd-agent/wiki/Proxy-Configuration
+#       See https://github.com/StackState/sts-agent/wiki/Proxy-Configuration
 #   $dogstreams
 #       Optional array of logs to parse and custom parsers to use.
-#       See https://github.com/DataDog/dd-agent/blob/ed5e698/datadog.conf.example#L149-L178
 #   $log_level
-#       Set value of 'log_level' variable. Default is 'info' as in dd-agent.
+#       Set value of 'log_level' variable. Default is 'info' as in sts-agent.
 #       Valid values here are: critical, debug, error, fatal, info, warn and warning.
 #   $hostname_extraction_regex
 #       Completely optional.
 #       Instead of reporting the puppet nodename, use this regex to extract the named
-#       'hostname' captured group to report the run in Datadog.
-#       ex.: '^(?<hostname>.*\.datadoghq\.com)(\.i-\w{8}\..*)?$'
+#       'hostname' captured group to report the run in StackState.
+#       ex.: '^(?<hostname>.*\.stackstate\.com)(\.i-\w{8}\..*)?$'
 #   $log_to_syslog
-#       Set value of 'log_to_syslog' variable. Default is true -> yes as in dd-agent.
+#       Set value of 'log_to_syslog' variable. Default is true -> yes as in sts-agent.
 #       Valid values here are: true or false.
 #   $dogstatsd_port
 #       Set value of the 'dogstatsd_port' variable. Defaultis 8125.
@@ -67,7 +65,7 @@
 #       Set graphite listener port
 #   $extra_template
 #       Optional, append this extra template file at the end of
-#       the default datadog.conf template
+#       the default stackstate.conf template
 #   $skip_apt_key_trusting
 #       Skip trusting the apt key. Default is false. Useful if you have a
 #       separate way of adding keys.
@@ -80,9 +78,9 @@
 #   String. Default: empty (30 second intervals)
 #   $listen_port
 #       Change the port that the agent listens on
-#       String. Default: empty (port 17123 in dd-agent)
+#       String. Default: empty (port 17123 in sts-agent)
 #   $additional_checksd
-#       Additional directory to look for datadog checks in
+#       Additional directory to look for stackstate checks in
 #       String. Default: empty
 #   $bind_host
 #       The loopback address the forwarder and Dogstatsd will bind.
@@ -164,11 +162,11 @@
 #
 # Sample Usage:
 #
-# include datadog_agent
+# include stackstate_agent
 #
 # OR
 #
-# class { 'datadog_agent':
+# class { 'stackstate_agent':
 #     api_key   => 'your key',
 #     tags      => ['env:production', 'linux'],
 #     puppet_run_reports  => false,
@@ -176,8 +174,8 @@
 # }
 #
 #
-class datadog_agent(
-  $dd_url = 'https://app.datadoghq.com',
+class stackstate_agent(
+  $dd_url = 'http://127.0.0.1:7070',
   $host = '',
   $api_key = 'your_API_key',
   $collect_ec2_tags = false,
@@ -240,15 +238,15 @@ class datadog_agent(
   $sd_template_dir = '',
   $sd_jmx_enable = false,
   $consul_token = '',
-  $conf_dir = $datadog_agent::params::conf_dir,
-  $conf_dir_purge = $datadog_agent::params::conf_dir_purge,
-  $service_name = $datadog_agent::params::service_name,
-  $package_name = $datadog_agent::params::package_name,
-  $dd_user = $datadog_agent::params::dd_user,
-  $dd_group = $datadog_agent::params::dd_group,
+  $conf_dir = $stackstate_agent::params::conf_dir,
+  $conf_dir_purge = $stackstate_agent::params::conf_dir_purge,
+  $service_name = $stackstate_agent::params::service_name,
+  $package_name = $stackstate_agent::params::package_name,
+  $dd_user = $stackstate_agent::params::dd_user,
+  $dd_group = $stackstate_agent::params::dd_group,
   $apm_enabled = false,
   $apm_env = '',
-) inherits datadog_agent::params {
+) inherits stackstate_agent::params {
 
   # Allow ports to be passed as integers or strings.
   # lint:ignore:only_variable_string
@@ -323,23 +321,23 @@ class datadog_agent(
   validate_string($apm_env)
 
   if $hiera_tags {
-    $local_tags = hiera_array('datadog_agent::tags')
+    $local_tags = hiera_array('stackstate_agent::tags')
   } else {
     $local_tags = $tags
   }
 
   if $hiera_integrations {
-    $local_integrations = hiera_hash('datadog_agent::integrations')
+    $local_integrations = hiera_hash('stackstate_agent::integrations')
   } else {
     $local_integrations = $integrations
   }
 
-  datadog_agent::tag{$local_tags: }
-  datadog_agent::tag{$facts_to_tags:
+  stackstate_agent::tag{$local_tags: }
+  stackstate_agent::tag{$facts_to_tags:
     lookup_fact => true,
   }
 
-  include datadog_agent::params
+  include stackstate_agent::params
   case upcase($log_level) {
     'CRITICAL': { $_loglevel = 'CRITICAL' }
     'DEBUG':    { $_loglevel = 'DEBUG' }
@@ -352,21 +350,21 @@ class datadog_agent(
   }
 
   case $::operatingsystem {
-    'Ubuntu','Debian' : { include datadog_agent::ubuntu }
+    'Ubuntu','Debian' : { include stackstate_agent::ubuntu }
     'RedHat','CentOS','Fedora','Amazon','Scientific' : {
-      class { 'datadog_agent::redhat':
+      class { 'stackstate_agent::redhat':
         manage_repo => $manage_repo,
       }
     }
-    default: { fail("Class[datadog_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
+    default: { fail("Class[stackstate_agent]: Unsupported operatingsystem: ${::operatingsystem}") }
   }
 
-  file { '/etc/dd-agent':
+  file { '/etc/sts-agent':
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => Package['datadog-agent'],
+    require => Package['stackstate-agent'],
   }
 
   file { $conf_dir:
@@ -376,51 +374,51 @@ class datadog_agent(
     force   => $conf_dir_purge,
     owner   => $dd_user,
     group   => $dd_group,
-    notify  => Service['datadog-agent']
+    notify  => Service['stackstate-agent']
   }
 
-  concat {'/etc/dd-agent/datadog.conf':
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+  concat {'/etc/sts-agent/stackstate.conf':
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0640',
-    notify  => Service[$datadog_agent::params::service_name],
-    require => File['/etc/dd-agent'],
+    notify  => Service[$stackstate_agent::params::service_name],
+    require => File['/etc/sts-agent'],
   }
 
-  concat::fragment{ 'datadog header':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => template('datadog_agent/datadog_header.conf.erb'),
+  concat::fragment{ 'stackstate header':
+    target  => '/etc/sts-agent/stackstate.conf',
+    content => template('stackstate_agent/stackstate_header.conf.erb'),
     order   => '01',
   }
 
-  concat::fragment{ 'datadog tags':
-    target  => '/etc/dd-agent/datadog.conf',
+  concat::fragment{ 'stackstate tags':
+    target  => '/etc/sts-agent/stackstate.conf',
     content => 'tags: ',
     order   => '02',
   }
 
-  concat::fragment{ 'datadog footer':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => template('datadog_agent/datadog_footer.conf.erb'),
+  concat::fragment{ 'stackstate footer':
+    target  => '/etc/sts-agent/stackstate.conf',
+    content => template('stackstate_agent/stackstate_footer.conf.erb'),
     order   => '05',
   }
 
-  concat::fragment{ 'datadog apm footer':
-    target  => '/etc/dd-agent/datadog.conf',
-    content => template('datadog_agent/datadog_apm_footer.conf.erb'),
+  concat::fragment{ 'stackstate apm footer':
+    target  => '/etc/sts-agent/stackstate.conf',
+    content => template('stackstate_agent/stackstate_apm_footer.conf.erb'),
     order   => '06',
   }
 
 
   if $puppet_run_reports {
-    class { 'datadog_agent::reports':
+    class { 'stackstate_agent::reports':
       api_key                   => $api_key,
       puppet_gem_provider       => $puppet_gem_provider,
       puppetmaster_user         => $puppetmaster_user,
-      dogapi_version            => $datadog_agent::params::dogapi_version,
+      dogapi_version            => $stackstate_agent::params::dogapi_version,
       hostname_extraction_regex => $hostname_extraction_regex,
     }
   }
 
-  create_resources('datadog_agent::integration', $local_integrations)
+  create_resources('stackstate_agent::integration', $local_integrations)
 }

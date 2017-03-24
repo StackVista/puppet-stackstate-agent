@@ -1,4 +1,4 @@
-# Class: datadog_agent::integrations::fluentd
+# Class: stackstate_agent::integrations::fluentd
 #
 # This class will install the fluentd integration
 #
@@ -8,7 +8,7 @@
 #
 # Sample Usage:
 #
-#  class { 'datadog_agent::integrations::fluentd' :
+#  class { 'stackstate_agent::integrations::fluentd' :
 #    monitor_agent_url     => 'http://localhost:24220/api/plugins.json',
 #    plugin_ids => [
 #     'elasticsearch_out',
@@ -17,21 +17,21 @@
 #  }
 #
 #
-class datadog_agent::integrations::fluentd(
+class stackstate_agent::integrations::fluentd(
   $monitor_agent_url = 'http://localhost:24220/api/plugins.json',
   $plugin_ids = [],
-) inherits datadog_agent::params {
-  include ::datadog_agent
+) inherits stackstate_agent::params {
+  include ::stackstate_agent
 
   validate_array($plugin_ids)
 
-  file { "${datadog_agent::params::conf_dir}/fluentd.yaml":
+  file { "${stackstate_agent::params::conf_dir}/fluentd.yaml":
     ensure  => file,
-    owner   => $datadog_agent::params::dd_user,
-    group   => $datadog_agent::params::dd_group,
+    owner   => $stackstate_agent::params::dd_user,
+    group   => $stackstate_agent::params::dd_group,
     mode    => '0600',
-    content => template('datadog_agent/agent-conf.d/fluentd.yaml.erb'),
-    require => Package[$datadog_agent::params::package_name],
-    notify  => Service[$datadog_agent::params::service_name],
+    content => template('stackstate_agent/agent-conf.d/fluentd.yaml.erb'),
+    require => Package[$stackstate_agent::params::package_name],
+    notify  => Service[$stackstate_agent::params::service_name],
   }
 }
