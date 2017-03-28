@@ -15,9 +15,9 @@ describe 'stackstate_agent::redhat' do
     it do
       should contain_yumrepo('stackstate')
         .with_enabled(1)\
-        .with_gpgcheck(1)\
-          .with_gpgkey('https://yum.stackstate.com/STACKSTATE_RPM_KEY.public')\
-        .with_baseurl('https://yum.stackstate.com/rpm/x86_64/')
+#        .with_gpgcheck(1)\
+#        .with_gpgkey('https://yum.stackstate.com/STACKSTATE_RPM_KEY.public')\
+        .with_baseurl('https://dl.bintray.com/stackstate-agent/stackstate-agent-yum-repo/')
     end
   end
   context 'with manage_repo => false' do

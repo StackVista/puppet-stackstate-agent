@@ -10,7 +10,7 @@ describe 'stackstate_agent::ubuntu' do
 
   it do
     contain_file('/etc/apt/sources.list.d/stackstate.list')\
-      .with_content(%r{deb\s+https://apt.stackstate.com/\s+stable\s+main})
+      .with_content(%r{deb\s+https://dl.bintray.com/stackstate-agent/stackstate-agent-deb-repo/})
   end
 
   # it should install the mirror
